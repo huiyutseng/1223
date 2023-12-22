@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dice Roller</title>
+</head>
+<body>
+
+<form action="#">
+    <input id="rollButton" type="button" value="Roll Dice">
+</form>
+
+<img id="die1" src="die1.png" alt="blank image">
+<img id="die2" src="die1.png" alt="blank image">
+<img id="die3" src="die1.png" alt="blank image">
+<img id="die4" src="die1.png" alt="blank image">
+<img id="die5" src="die1.png" alt="blank image">
+<img id="die6" src="die1.png" alt="blank image">
+<img id="die7" src="die1.png" alt="blank image">
+<img id="die8" src="die1.png" alt="blank image">
+<img id="die9" src="die1.png" alt="blank image">
+<img id="die10" src="die1.png" alt="blank image">
+<img id="die11" src="die1.png" alt="blank image">
+<img id="die12" src="die1.png" alt="blank image">
+
+<!-- HTML div for displaying percentages -->
+<div id="percentagesDisplay"></div>
+
+<script>
+    // Register button listener and get the img elements
+    function start() {
+        var button = document.getElementById("rollButton");
+        button.addEventListener("click", rollDice);
+        dieImages = [];
+        counts = Array.from({ length: 6 }, () => 0);
+        for (let i = 1; i <= 12; i++) {
+            dieImages.push(document.getElementById("die" + i));
+        }
+    }
+
+    // Function to roll the dice
+    function rollDice() {
+        // Reset counts before rolling
+        counts.fill(0);
+
+        dieImages.forEach(function(dieImage) {
+            setImage(dieImage);
+        });
+        updatePercentages();
+    }
+
+    function setImage(dieImg) {
+        var dieValue = Math.floor(Math.random() * 6) + 1;
+        dieImg.setAttribute("src", "die" + dieValue + ".png");
+        dieImg.setAttribute("alt", "die image with " + dieValue + " spot(s)");
+        counts[dieValue - 1]++;
+    }
+
+    // Function to update the percentages display
+    function updatePercentages() {
+        let percentagesHTML = "<h2>Face Percentages:</h2><ul>";
+
+        const totalRolls = dieImages.length;
+
+        for (let i = 1; i <= 6; i++) {
+            const percentage = ((counts[i - 1] / totalRolls) * 100).toFixed(2);
+            percentagesHTML += `<li>Face ${i}: ${percentage}%</li>`;
+        }
+
+        percentagesHTML += "</ul>";
+
+        document.getElementById("percentagesDisplay").innerHTML = percentagesHTML;
+    }
+
+    // Call the start function when the page is loaded
+    document.addEventListener("DOMContentLoaded", start);
+</script>
+
+</body>
+</html>
